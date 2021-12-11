@@ -44,8 +44,8 @@ NOTE:   String length must be evenly divisible by 16byte (str_len % 16 == 0)
 // The number of columns comprising a state in AES. This is a constant in AES. Value=4
 #define Nb 4
 
-#if defined(AES256) && (AES256 == 1)
-    #define Nk 8
+#ifdef defined(AES256) && (AES256 == 1)
+    #define Nk 8 
     #define Nr 14
 #elif defined(AES192) && (AES192 == 1)
     #define Nk 6
@@ -117,7 +117,7 @@ static const uint8_t rsbox[256] = {
 
 // The round constant word array, Rcon[i], contains the values given by 
 // x to the power (i-1) being powers of x (x is denoted as {02}) in the field GF(2^8)
-static const uint8_t Rcon[11] = {
+static const uint8_t Rcon[11] = { // RC trong hàm g
   0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36 };
 
 /*
@@ -158,6 +158,7 @@ static void KeyExpansion(uint8_t* RoundKey, const uint8_t* Key)
   }
 
   // All other round keys are found from the previous round keys.
+  // 10 rounds in key shedule
   for (i = Nk; i < Nb * (Nr + 1); ++i)
   {
     {
@@ -166,7 +167,6 @@ static void KeyExpansion(uint8_t* RoundKey, const uint8_t* Key)
       tempa[1]=RoundKey[k + 1];
       tempa[2]=RoundKey[k + 2];
       tempa[3]=RoundKey[k + 3];
-
     }
 
     if (i % Nk == 0)
@@ -174,7 +174,7 @@ static void KeyExpansion(uint8_t* RoundKey, const uint8_t* Key)
       // This function shifts the 4 bytes in a word to the left once.
       // [a0,a1,a2,a3] becomes [a1,a2,a3,a0]
 
-      // Function RotWord()
+      // Function RotWord() // ShiftRows trước khi cho vào Sbox
       {
         const uint8_t u8tmp = tempa[0];
         tempa[0] = tempa[1];
@@ -186,7 +186,7 @@ static void KeyExpansion(uint8_t* RoundKey, const uint8_t* Key)
       // SubWord() is a function that takes a four-byte input word and 
       // applies the S-box to each of the four bytes to produce an output word.
 
-      // Function Subword()
+      // Function Subword() // Cho vào Sbox
       {
         tempa[0] = getSBoxValue(tempa[0]);
         tempa[1] = getSBoxValue(tempa[1]);

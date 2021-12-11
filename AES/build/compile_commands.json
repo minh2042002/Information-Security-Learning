@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/ducminh_dev/code/Information-Security-Learning/AES/build",
+  "command": "/bin/clang-10   -g   -o CMakeFiles/tiny-aes.dir/aes.c.o   -c /home/ducminh_dev/code/Information-Security-Learning/AES/aes.c",
+  "file": "/home/ducminh_dev/code/Information-Security-Learning/AES/aes.c"
+}
+]
