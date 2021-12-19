@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/cygwin64/usr/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.19041.0",
+            "intelliSenseMode": "windows-gcc-x64",
+            "compileCommands": "D:/Onedrive/2020.1/Information Security/Project/AES/build/compile_commands.json",
+            "compilerPath": "C:/cygwin64/bin/g++.exe"
+        }
+    ],
+    "version": 4
+}
