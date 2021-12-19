@@ -23,23 +23,12 @@ def modular_exponent(a, b, n):
         r = (r*a)%n
     return r%n
 
-# def check_dict(ans):
-#     for i in ans:
-#         if 
-def check_gcd():
-    for b in range(13, 2000):
-        ans = {}
-        for i in range(b):
-            if gcd(i,b) == 1:
-                ans[mod_inv(i, b)] = i
-
 G = {1,2,3,4,5,6,7,8,9,10}
 
 def check_set(ans, G):
     for val in G:
         if val not in ans:
             return 0
-
     return 1
 
 def find_birth_element(G, module):
@@ -53,8 +42,12 @@ def find_birth_element(G, module):
                 print(f"{i} ", end=" ")
             print("\n")
 
+def DLog(g, a, n): # g^x = a mod n, DLog(g, a) mod n = x
+    for x in range(n):
+        if modular_exponent(g, x, n) == a:
+            return x
+    return -1
 
 if __name__ == '__main__': 
 
-    sys.setrecursionlimit(3000)
-    print(modular_exponent(5,-1,709551629))
+    print(DLog(2, 220801, 1048583))
