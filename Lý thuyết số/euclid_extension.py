@@ -1,6 +1,7 @@
 import sys
 from math import gcd
 
+# Algorithm extension euclid
 def extended_euclid(a, b): # d = gcd(a,b) = a*x + b*y
 	if b == 0:
 		return a,1,0
@@ -9,6 +10,7 @@ def extended_euclid(a, b): # d = gcd(a,b) = a*x + b*y
 		d, x, y = (d_, y_, x_ - int(a/b)*y_)
 		return d, x, y
 
+# Calculate inverse of number in module
 # d = gcd(a,n) = a*x + n*y = a*x mod n
 # if d = 1:
 #   a^-1 = x mod n 
@@ -46,12 +48,14 @@ def find_birth_element(G, module):
                 print(f"{i} ", end=" ")
             print("\n")
 
+# Discrete logarithm
 def DLog(g, a, n): # g^x = a mod n, DLog(g, a) mod n = x
     for x in range(n):
         if modular_exponent(g, x, n) == a:
             return x
     return -1
 
-if __name__ == '__main__': 
-
-    print(DLog(2, 220801, 1048583))
+# fermat's little theorem: 
+#   a^(p-1) = 1 mod p
+#   a^-1 = a^(p-2)
+print(modular_exponent(5, 18446744073709551629-2, 18446744073709551629))
