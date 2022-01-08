@@ -1,10 +1,14 @@
-def find_birth_element(G, module):
-#     for g in range(module):
-#         ans = set()
-#         for x in range(module):
-#             ans.add((g**x)%11)
-#         if check_set(ans, G):
-#             print(f"{g}: ", end=" ")
-#             for i in ans:
-#                 print(f"{i} ", end=" ")
-#             print("\n")
+def find_primitive_root(N):
+#     Z = []
+#     for i in range(1, N):
+#         if euclid(1, N) == 1:
+#             Z.append(i)
+#     S = []
+#     for i in Z:
+#         for j in Z:
+#             if modular_exponent(i, j, N) == 1:
+#                 if j == len(Z):
+#                     S.append(i)
+#                 break
+    
+#     return S, len(S)

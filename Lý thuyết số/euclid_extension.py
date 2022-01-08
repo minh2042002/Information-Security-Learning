@@ -29,24 +29,6 @@ def modular_exponent(a, b, n):
         r = (r*a)%n
     return r%n
 
-G = {1,2,3,4,5,6,7,8,9,10}
-
-def check_set(ans, G):
-    for val in G:
-        if val not in ans:
-            return 0
-    return 1
-
-def find_birth_element(G, module): 
-    for g in range(module):
-        ans = set()
-        for x in range(module):
-            ans.add((g**x)%11)
-        if check_set(ans, G):
-            print(f"{g}: ", end=" ")
-            for i in ans:
-                print(f"{i} ", end=" ")
-            print("\n")
 
 # Discrete logarithm
 def DLog(g, a, n): # g^x = a mod n, DLog(g, a) mod n = x
@@ -58,4 +40,28 @@ def DLog(g, a, n): # g^x = a mod n, DLog(g, a) mod n = x
 # fermat's little theorem: 
 #   a^(p-1) = 1 mod p
 #   a^-1 = a^(p-2)
-print(modular_exponent(5, 18446744073709551629-2, 18446744073709551629))
+
+def euclid(a, b):
+    if b == 0:
+        return a
+    else:
+        return euclid(b, a%b)
+
+# Find primitive root
+def find_primitive_root(N):
+    Z = []
+    for i in range(1, N):
+        if euclid(1, N) == 1:
+            Z.append(i)
+    S = []
+    for i in Z:
+        for j in Z:
+            if modular_exponent(i, j, N) == 1:
+                if j == len(Z):
+                    S.append(i)
+                break
+    
+    return S, len(S)
+
+if __name__ == "__main__":
+    pass
