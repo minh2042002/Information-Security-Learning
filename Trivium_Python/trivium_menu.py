@@ -1,11 +1,14 @@
-from collections import deque # hàng đợi 2 đầu
-from itertools import repeat # trình lặp lại nhanh hơn khi sử dụng for
+from collections import deque
+from email import message # hàng đợi 2 đầu
+from itertools import repeat
+from statistics import mode # trình lặp lại nhanh hơn khi sử dụng for
 from bitstring import BitArray 
 # BitArray là một dãy Bit có thể thay đổi,
 # BitArray cũng chuyển đổi 1 string thành 1 dãy bit 
 # e.g: a = '0x10101' - 1 string
 # b = BitArray(a) - 1 dãy bit 0x10101
 import argparse # thư viện tạo chương trình CLI (command line interface)
+import nacl.utils
 
 class Trivium:
     def __init__(self, key, iv):
@@ -124,67 +127,81 @@ class Trivium:
         plain_text_final = ''.join(i for i in plain_text)
         return plain_text_final
 
+def print_menu():
+    print("\nMenu program:");
+    print("Enter 'k'  >> General random KEY 80 bits.")
+    print("Enter 'iv' >> General random IV 80 bits .")
+    print("Enter 'e'  >> Trivium Encrypt.")
+    print("Enter 'd'  >> Trivium Decrypt.")
+    print("Enter 'q'  >> Quit program.")
+
 def main():
+    print("\n\tTRIVIUM PROGRAM")
+    while (1):
+        print_menu()
+        mode = str(input("Enter selection: "))
 
-    parser = argparse.ArgumentParser(description='Decryption or encryption using Trivium stream cipher.',
-        epilog="python trivium.py -m e -k 0x80000000000000000000 -iv 0x00000000000000000000 ABCD")
+        # Chế độ encyption
+        if mode == 'e':
+            key = str(input("Enter key: "))
+            iv = str(input("Enter iv: "))
+            message = str(input("Enter message: "))
 
-    """
-    Ở đây đang tạo ra một biến parser, ArgumentParser trả về một đối tượng hay một object
-    từ đây parser sẽ lưu trữ các thông tin cần thiết 
-    để truyền các biến từ CLI vào chương trình python
-    descripton: cung cấp thông tin mô tả chương trình của bạn
-    """
-    parser.add_argument('-m', '--mode', type=str, choices=['e', 'd'],
-        help='Choose mode, e for encryption - d for decryption')
-        # type: kiểu dữ liệu mà tham số truyền vào được ép thành
-        # choices: như một dạng lựa chọn giữa các chức năng
-        # -m: như 1 cú pháp để gọi chức năng ứng với tham số cần truyền vào
-    parser.add_argument('-k, --key', action='store', dest='key', type=str,
-        help='An 80 bit key e.g.: 29bf54b7dffa7a7fe4ed')
-        # action: Mỗi tham số truyền vào CLI sẽ được ArgumentParser đính với 1 hành động duy nhất (action)
-        # tham số này sẽ định nghĩa cách các tham số truyền vào CLI được xử lý
-        # store: là hành động lưu trữ biến đang truyền vào CLI. Đây là hành động mặc định
-    parser.add_argument('-iv', action='store', dest='iv', type=str,
-        help='An 80 bit initialization vector e.g.: ca65c826cbe6cf2241f9')
-    parser.add_argument('message', help='Cipher text (hexa) or plain text (ascii)')
+            # Khởi tạo Trivium
+            KEY = '0x' + key
+            KEY = BitArray(KEY) 
+            print('{:<15}{:<2}{:<10}'.format('KEY', '=', KEY.hex))
+            KEY = list(map(int, KEY.bin)) # Chuyển đổi key thành 1 list chứa các bit 0 và 1
 
-    args = parser.parse_args()
-    # Hàm parse_args() biến các tham số được truyền vào CLI thành các thuộc tính của 1 object
-    # và trả về object đó
-    
-    # Khởi tạo Trivium
-    KEY = '0x' + args.key
-    KEY = BitArray(KEY) 
-    print('{:<15}{:<2}{:<10}'.format('KEY', '=', KEY.hex))
-    KEY = list(map(int, KEY.bin)) # Chuyển đổi key thành 1 list chứa các bit 0 và 1
+            IV = '0x' + iv
+            IV = BitArray(IV)
+            print('{:<15}{:<2}{:<10}'.format('IV', '=', IV.hex))
+            IV = list(map(int, IV.bin))
 
-    IV = '0x' + args.iv
-    IV = BitArray(IV)
-    print('{:<15}{:<2}{:<10}'.format('IV', '=', IV.hex))
-    IV = list(map(int, IV.bin))
-
-    trivium = Trivium(KEY, IV)
-
-    # Chế độ encyption
-    if args.mode == 'e':
-        print('{:<15}{:<2}{:<10}\n'.format('PLAIN TEXT', '=', args.message))
-        print('{: ^15}{: ^15}{: ^15}{: ^15}{: ^15}'.format('INPUT', 'PLAIN TEXT', 'KEYSTREAM', 'CIPHER TEXT', 'OUTPUT'))
-        print('{:->75}'.format(' '))
-        
-        cipher = trivium.encrypt(args.message)
-        cipher = '0b' + ''.join(str(i) for i in cipher)
-        cipher= BitArray(cipher)
-        cipher_str = str(cipher)[2:]
-        print("------------")
-        print("CIPHER TEXT:", cipher_str)
-    # Chế độ decyption
-    elif args.mode == 'd':
-        print('{:<15}{:<2}{:<10}\n'.format('CIPHER TEXT', '=', args.message))
-        plain_text = trivium.decrypt(args.message)
-        print('------------')
-        print("PLAIN TEXT:", plain_text)
+            trivium = Trivium(KEY, IV)
+            print('{:<15}{:<2}{:<10}\n'.format('PLAIN TEXT', '=', message))
+            print('{: ^15}{: ^15}{: ^15}{: ^15}{: ^15}'.format('INPUT', 'PLAIN TEXT', 'KEYSTREAM', 'CIPHER TEXT', 'OUTPUT'))
+            print('{:->75}'.format(' '))
             
+            cipher = trivium.encrypt(message)
+            cipher = '0b' + ''.join(str(i) for i in cipher)
+            cipher= BitArray(cipher)
+            cipher_str = str(cipher)[2:]
+            print("------------")
+            print("CIPHER TEXT:", cipher_str)
+        # Chế độ decyption
+        elif mode == 'd':
+            key = str(input("Enter key: "))
+            iv = str(input("Enter iv: "))
+            message = str(input("Enter cipher text: "))
+
+            # Khởi tạo Trivium
+            KEY = '0x' + key
+            KEY = BitArray(KEY) 
+            print('{:<15}{:<2}{:<10}'.format('KEY', '=', KEY.hex))
+            KEY = list(map(int, KEY.bin)) # Chuyển đổi key thành 1 list chứa các bit 0 và 1
+
+            IV = '0x' + iv
+            IV = BitArray(IV)
+            print('{:<15}{:<2}{:<10}'.format('IV', '=', IV.hex))
+            IV = list(map(int, IV.bin))
+
+            trivium = Trivium(KEY, IV)
+            print('{:<15}{:<2}{:<10}\n'.format('CIPHER TEXT', '=', message))
+            plain_text = trivium.decrypt(message)
+            print('------------')
+            print("PLAIN TEXT:", plain_text)
+        elif mode == 'k':
+            key_hex = str(BitArray(nacl.utils.random(10)))
+            key = key_hex[2:]
+            print('\nKey:', key)
+        elif mode == 'iv':
+            iv_hex = str(BitArray(nacl.utils.random(10)))
+            iv = iv_hex[2:]
+            print('\nIV: ', iv)
+        elif mode == 'q':
+            print("Program shutdown...")
+            break
+
 if __name__ == "__main__":
     main()
-

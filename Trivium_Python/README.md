@@ -10,23 +10,19 @@ pip install PyNaCL
 ```
 
 ## Usage
-@Tạo dãy bit ngẫu nhiên IV
+@Tạo dãy bit ngẫu nhiên IV và KEY
 ```
-Cú pháp: python create_iv.py [-iv y] [-k y]
-Ví dụ về cú pháp:
-python create_IV_Key.py -iv y -k y
-
-Có thể tạo chỉ IV hoặc Key
+Cú pháp: python trivium.py -m iv
+         python trivium.py -m key
 
 optional:
-  --help               hiển thị trợ giúp
-  -iv                  tạo dãy IV dưới dạng hexa độ dài 80 bit
-  -k                   tạo khóa Key dưới dạng hexa độ dài 80 bit
+  iv                  tạo dãy IV dưới dạng hexa độ dài 80 bit
+  key                 tạo khóa Key dưới dạng hexa độ dài 80 bit
 ```
 
 @Chạy chương trình trivium
 ```
-Cú pháp: python trivium.py [-m {e,d}] [-k, --key KEY] [-iv IV] message
+Cú pháp: python trivium.py [-m {e,d}] [-k, --key KEY] [-iv IV] -t message
 Ví dụ về cú pháp:
 python trivium.py -m e -k 29bf54b7dffa7a7fe4ed -iv ca65c826cbe6cf2241f9 ABCD
 ```

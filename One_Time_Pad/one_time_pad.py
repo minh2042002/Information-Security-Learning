@@ -28,7 +28,7 @@ def randomKey(plaintextBinary): # tạo key
 
 	return key
 
-def Encrypt(plaintextBinary, Key): # mã hoá bản rõ từ nhị phân
+def Encrypt(plaintextBinary, key): # mã hoá bản rõ từ nhị phân
 	ciphertextBinary = list([])
 
 	for i in range(len(plaintextBinary)):
@@ -55,7 +55,7 @@ def binaryToPlaintext(plaintextBinary): # chuyển bản rõ từ nhị phân sa
 	return str(plaintext)
 
 def cutStringToList_5(__string):
-	
+	pass
 	
 # def inputKey(binaryKey):
 	
@@ -64,11 +64,10 @@ def cutStringToList_5(__string):
 # 	for i in range(len(binaryKey)):
 # 		i += 4
 
-
 def main():
 	plaintext = str(input("Plaintext: "))
 
-	# plaintextBinary = plaintextToBinary(plaintext)
+	# plaintextBinary = plaintextToBinary(plaintext	)
 
 	# key = randomKey(plaintextBinary)
 
