@@ -30,7 +30,7 @@ def modular_exponent(a, b, n):
     return r%n
 
 
-# Discrete logarithm
+# Discrete logarithmf
 def DLog(g, a, n): # g^x = a mod n, DLog(g, a) mod n = x
     for x in range(n):
         if modular_exponent(g, x, n) == a:
@@ -63,5 +63,46 @@ def find_primitive_root(N):
     
     return S, len(S)
 
-if __name__ == "__main__":
-    pass
+def ElGamal_signature(m, kE, d, g, p):
+    r = modular_exponent(g, kE, p)
+    s = ((m - d*r)*mod_inv(kE, p-1))%(p-1)
+    return r, s
+
+def DH_function(g, g_x, g_y, n):
+    x = DLog(g, g_x, n)
+    y = DLog(g, g_y, n)
+    result = modular_exponent(g, x*y, n)
+    return result
+
+y = 7
+e = 7
+n = 13*11
+for i in range(n):
+    if modular_exponent(i, e, n) == y:
+        print(i)
+
+# print(DLog(2, 4, 13))
+
+#print(modular_exponent(3, 16*6, 19))
+
+# print(modular_exponent(779, 201601, 11413))
+
+# d = mod_inv(7,120)
+# x = modular_exponent(3, d, 13*11)
+# print(x)
+
+# r, s = ElGamal_signature(21, 35, 67, 23, 97)
+# print(f"({r},{s})")
+
+# x = 1683
+# print(modular_exponent(x, 7, 9797))
+
+# n = 113
+# print(modular_exponent(22, n-2, n))
+
+# print(DH_function(3, 11, 14, 19))
+
+# k2 = 0xa9
+# k1 = 0x2b
+# k0 = 0xf2
+# print(hex(0x31 ^ 0xf2))

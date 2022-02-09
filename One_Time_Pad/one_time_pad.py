@@ -1,6 +1,6 @@
 from random import choice
 
-LETTER = 'abcdefghijklmnopqrstuvwxyz'
+LETTER = "zxcvbnmasdfghjklqwertyuiop0123456789 "
 #number = int('{0:05b}'.format(5))
 
 
@@ -66,11 +66,9 @@ def cutStringToList_5(__string):
 
 def main():
 	plaintext = str(input("Plaintext: "))
+	plaintext_binary = plaintextToBinary(plaintext)
+	key = str(input("Key: "))
 
-	# plaintextBinary = plaintextToBinary(plaintext	)
-
-	# key = randomKey(plaintextBinary)
-
-	print(plaintext.split(' '))
+	Encrypt(plaintext_binary, key)
 
 main()
